@@ -11,11 +11,6 @@
       - 配置 package.json()
         ```json
         {
-        	"husky": {
-        		"hooks": {
-        			"pre-commit": "lint-staged"
-        		}
-        	},
         	"lint-staged": {
         		"*.{js,css,md,ts,tsx}": "prettier --write"
         	}
@@ -24,22 +19,9 @@
         ```
   - 添加 commitlint, 实现 commit 约束
     - 安装 `cnpm install --save-dev @commitlint/config-conventional @commitlint/cli`
-    - 执行命令 `echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js`
-    - 将 commitlint 添加到 husky 中 `cnpm husky add .husky/commit-msg "cnpm commitlint --edit $1"`
-    - 执行命令 `npx husky add .husky/commit-msg "yarn commitlint --edit $1"`
-    - .husky 下添加 commit-msg, 并修改 package.json 中添加 commit-msg
-      ```json
-      {
-          "husky": {
-              "hooks": {
-                  "commit-msg": "commit -E HUSKY_GIT_PARAMS"
-              }
-          },
-      }
-        ``
-
-
-      ```
+      - 执行命令 `echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js`
+    - 将 commitlint 添加到 .husky
+      - 执行命令 `npx husky add .husky/commit-msg "yarn commitlint --edit $1"`
   - Prettire 和 ESLint 冲突问题
     - 安装依赖 `cnpm i -D eslint-config-prettier`
     - 配置 package.json, 修改 lint 配置, 添加 prettire
