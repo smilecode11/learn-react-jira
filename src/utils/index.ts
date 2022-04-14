@@ -56,3 +56,20 @@ export const useDebounce = <T>(value: T, delay?: number): T => {
 // log()
 // log()
 // log()
+
+/** 自定义 hook useArray*/
+export const useArray = <T>(initialArray: T[]) => {
+	const [value, setValue] = useState(initialArray)
+
+	return {
+		value,
+		setValue,
+		add: (item: T) => setValue([...value, item]),
+		clear: () => setValue([]),
+		removeIndex: (index: number) => {
+			const copyObject = [...value]
+			copyObject.splice(index, 1)
+			setValue(copyObject)
+		},
+	}
+}
