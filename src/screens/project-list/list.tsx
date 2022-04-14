@@ -16,8 +16,7 @@ interface ListPros {
 	list: Project[]
 }
 
-const List = (props: ListPros) => {
-	const { list, users } = props
+const List = ({ list, users }: ListPros) => {
 	return (
 		//  @ts-ignore
 		<table border="1">

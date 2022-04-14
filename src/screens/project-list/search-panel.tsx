@@ -9,8 +9,7 @@ interface SearchPanelProps {
 	setParam: (param: SearchPanelProps['param']) => void
 }
 
-const SearchPanel = (props: SearchPanelProps) => {
-	const { param, setParam, users } = props
+const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
 	return (
 		<>
 			<form action="#">

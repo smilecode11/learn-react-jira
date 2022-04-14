@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 
-export const isFalsy = (value: string | number) => (value === 0 ? false : !value)
+export const isFalsy = (value: unknown) => {
+	return value === 0 ? false : !value
+}
 
 /** 清除对象中空值*/
 export const cleanObject = (object: object) => {
@@ -25,7 +27,7 @@ export const useDidMount = (callback: () => void) => {
 }
 
 /** 自定义 hook useDebounce, 防抖函数*/
-export const useDebounce = (value: any, delay?: number) => {
+export const useDebounce = (value: unknown, delay?: number): any => {
 	const [debounceValue, setDebounceValue] = useState(value)
 
 	useEffect(() => {
