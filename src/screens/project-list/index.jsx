@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react'
 import qs from 'qs'
 import './index.css'
-import { cleanObject } from 'utils'
+import { cleanObject, useMount, useDebounce } from 'utils'
 
 import SearchPanel from "./search-panel"
 import List from "./list"
@@ -13,26 +13,27 @@ import List from "./list"
 const apiUrl = process.env.REACT_APP_API_URL
 
 const ProjectList = () => {
-
+    const [users, setUsers] = useState([])
     const [param, setParam] = useState({ name: '', id: '' })
     const [list, setList] = useState([])
-    const [users, setUsers] = useState([])
+    // 赋予 param 防抖能力
+    const debouncedParam = useDebounce(param, 700)
 
     useEffect(() => {
-        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async (resp) => {
+        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`).then(async (resp) => {
             if (resp.ok) {
                 setList(await resp.json())
             }
         })
-    }, [param])
+    }, [debouncedParam])
 
-    useEffect(() => {
+    useMount(() => {
         fetch(`${apiUrl}/users`).then(async resp => {
             if (resp.ok) {
                 setUsers(await resp.json())
             }
         })
-    }, [])
+    })
 
 
     return <div className='project-list-container'>
