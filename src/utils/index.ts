@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 
-export const isFalsy = value => (value === 0 ? false : !value)
+export const isFalsy = (value: string | number) => (value === 0 ? false : !value)
 
 /** 清除对象中空值*/
-export const cleanObject = object => {
+export const cleanObject = (object: object) => {
 	const result = { ...object }
 	Object.keys(result).forEach(key => {
+		//	@ts-ignore
 		const value = result[key]
 		if (isFalsy(value)) {
+			//	@ts-ignore
 			delete result[key]
 		}
 	})
@@ -15,14 +17,15 @@ export const cleanObject = object => {
 }
 
 /** 自定义 hook useMount, 模拟生命周期 componentDidMount*/
-export const useMount = callback => {
+export const useDidMount = (callback: () => void) => {
 	useEffect(() => {
 		callback()
+		// eslint-disable-next-line
 	}, [])
 }
 
 /** 自定义 hook useDebounce, 防抖函数*/
-export const useDebounce = (value, delay = 700) => {
+export const useDebounce = (value: any, delay?: number) => {
 	const [debounceValue, setDebounceValue] = useState(value)
 
 	useEffect(() => {

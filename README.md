@@ -53,3 +53,8 @@
   PATCH   /tickets/1    //  修改
   DELETE  /tickets/12   //  删除
   ```
+
+## 使用强类型语言 TypeScript
+
+- 三方 type 包
+-
