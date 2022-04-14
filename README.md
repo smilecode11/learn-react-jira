@@ -42,7 +42,7 @@
   - 优点: 配质检单, 0 代码, 30 秒启动一个 REST API Server, 自定义程度高, 增删改查真实模拟
   - 安装依赖 `cnpm i -D json-server`
   - 新建文件夹 **json_server_mock**/db.json
-  - 修改 package.json, 添加启动命令 `"json-server": "json-server __json_server_mock__/db.json --watch"`
+  - 修改 package.json, 添加启动命令 `"json-server": "json-server __json_server_mock__/db.json --watch --port 9001"`
   - 执行命令 `npm run json-server` 开始使用
 - REST API
   ```
