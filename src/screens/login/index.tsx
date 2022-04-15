@@ -1,27 +1,8 @@
 import { FormEvent } from 'react'
 import './index.css'
-const apiUrl = process.env.REACT_APP_API_URL
+import { login } from '../../auth-provider'
 
 const LoginScreen = () => {
-	/** 登录 */
-	const login = (param: { username: string; password: string }) => {
-		fetch(`${apiUrl}/login`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(param),
-		}).then(async resp => {
-			console.log(resp)
-			if (resp.ok) {
-				const data = await resp.json()
-				alert(`登录成功 ${JSON.stringify(data)}`)
-			} else {
-				alert(`登录失败 ${JSON.stringify(await resp.json())}`)
-			}
-		})
-	}
-
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		const username = (event.currentTarget.elements[0] as HTMLInputElement).value
