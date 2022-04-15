@@ -1,6 +1,7 @@
 import qs from 'qs'
 import * as auth from 'auth-provider'
 import { useAuth } from 'context/auth-context'
+import { type } from 'os'
 const apiUrl = process.env.REACT_APP_API_URL
 
 interface Conifg extends RequestInit {
@@ -43,7 +44,26 @@ export const http = (endpoint: string, { data, token, headers, ...customeConfig 
 
 export const useHttp = () => {
 	const { user } = useAuth()
-	// return ([endpoint, config]: [endpoint: string, config: Conifg]) => http(endpoint, { ...config, token: user?.token })
-	// return ([endpoint, config]: [string, Conifg]) => http(endpoint, { ...config, token: user?.token })
 	return (...[endpoint, config]: Parameters<typeof http>) => http(endpoint, { ...config, token: user?.token })
 }
+
+//  Utility type: Partial Omit Parameters
+type Person = {
+	name: string
+	age: number
+}
+
+//  Partial, 让属性变成非必需
+const xiaoMing: Partial<Person> = { name: 'xiao ming' }
+
+//  Partial 的实现
+type Partial<T> = {
+	[P in keyof T]?: T[P]
+}
+
+//  Omit, 剔除属性 -> 属性非必须
+const shenMiRen: Omit<Person, 'name'> = { age: 27 }
+const shenMiRen2: Omit<Person, 'name' | 'age'> = {}
+
+//  Parameters 读取函数参数定义
+type httpType = Parameters<typeof http>

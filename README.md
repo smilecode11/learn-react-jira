@@ -57,6 +57,6 @@
 
 ## 使用强类型语言 TypeScript
 
-## context 使用
+- Utility type: Partial Omit Parameters
 
-- 全局状态管理用户
+## context 使用
