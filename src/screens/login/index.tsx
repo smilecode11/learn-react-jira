@@ -12,9 +12,12 @@ const LoginScreen = () => {
 			},
 			body: JSON.stringify(param),
 		}).then(async resp => {
+			console.log(resp)
 			if (resp.ok) {
 				const data = await resp.json()
-				console.log('登录成功', data)
+				alert(`登录成功 ${JSON.stringify(data)}`)
+			} else {
+				alert(`登录失败 ${JSON.stringify(await resp.json())}`)
 			}
 		})
 	}
