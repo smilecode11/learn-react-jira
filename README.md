@@ -44,6 +44,7 @@
   - 新建文件夹 **json_server_mock**/db.json
   - 修改 package.json, 添加启动命令 `"json-server": "json-server __json_server_mock__/db.json --watch --port 9001"`
   - 执行命令 `npm run json-server` 开始使用
+  - 添加中间件, 修改执行命令 `"json-server": "json-server __json_server_mock__/db.json --watch --port 9001 --middlewares ./__json-server__mock__/middleware.js"`
 - REST API
   ```
   GET     /tickets      //  列表
