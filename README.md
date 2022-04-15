@@ -57,5 +57,6 @@
 
 ## 使用强类型语言 TypeScript
 
-- 三方 type 包
--
+## context 使用
+
+- 全局状态管理用户
