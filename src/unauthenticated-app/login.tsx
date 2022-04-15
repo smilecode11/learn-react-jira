@@ -5,7 +5,7 @@ import { useAuth } from 'context/auth-context'
 
 const LoginScreen = () => {
 	//	从 useAuth 中获取登录方法及登录用户信息
-	const { login, user } = useAuth()
+	const { login } = useAuth()
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -17,13 +17,6 @@ const LoginScreen = () => {
 
 	return (
 		<form className="login-container" onSubmit={handleSubmit}>
-			{user && (
-				<>
-					<div>
-						当前登录用户: {user.name} - token: {user.token}
-					</div>
-				</>
-			)}
 			<div>
 				<label htmlFor="username">用户名</label>&nbsp;
 				<input type="text" id={'username'} />

@@ -8,11 +8,10 @@ import { useEffect, useState } from 'react'
 import qs from 'qs'
 import './index.css'
 import { cleanObject, useDidMount, useDebounce } from 'utils'
+import { useHttp } from 'utils/http'
 
 import SearchPanel from './search-panel'
 import List from './list'
-
-const apiUrl = process.env.REACT_APP_API_URL
 
 const ProjectList = () => {
 	const [users, setUsers] = useState([])
@@ -21,20 +20,14 @@ const ProjectList = () => {
 	// 赋予 param 防抖能力
 	const debouncedParam = useDebounce(param, 700)
 
+	const client = useHttp()
+
 	useEffect(() => {
-		fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`).then(async resp => {
-			if (resp.ok) {
-				setList(await resp.json())
-			}
-		})
+		client('projects', { data: cleanObject(debouncedParam) }).then(list => setList(list))
 	}, [debouncedParam])
 
 	useDidMount(() => {
-		fetch(`${apiUrl}/users`).then(async resp => {
-			if (resp.ok) {
-				setUsers(await resp.json())
-			}
-		})
+		client('users').then(users => setUsers(users))
 	})
 
 	return (
