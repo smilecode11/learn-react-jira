@@ -10,6 +10,7 @@ import { useHttp } from 'utils/http'
 
 import SearchPanel from './search-panel'
 import List from './list'
+import styled from '@emotion/styled'
 
 const ProjectList = () => {
 	const [users, setUsers] = useState([])
@@ -29,11 +30,16 @@ const ProjectList = () => {
 	})
 
 	return (
-		<div className="project-list-container">
+		<Container>
+			<h2>项目列表</h2>
 			<SearchPanel users={users} param={param} setParam={setParam}></SearchPanel>
 			<List users={users} list={list}></List>
-		</div>
+		</Container>
 	)
 }
 
 export default ProjectList
+
+const Container = styled.div`
+	padding: 3.2rem;
+`

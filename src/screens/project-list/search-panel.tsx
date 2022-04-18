@@ -12,8 +12,8 @@ interface SearchPanelProps {
 
 const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
 	return (
-		<Form style={{ display: 'flex' }}>
-			<Form.Item style={{ marginRight: '9px' }}>
+		<Form style={{ marginBottom: '2rem' }} layout={'inline'}>
+			<Form.Item>
 				<Input
 					type="text"
 					placeholder={'项目名'}
@@ -36,7 +36,7 @@ const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
 						})
 					}
 				>
-					<Select.Option value={''}>选择负责人</Select.Option>
+					<Select.Option value={''}>请选择</Select.Option>
 					{users.map(user => {
 						return (
 							<Select.Option key={user.id} value={user.id}>

@@ -1,77 +1,69 @@
-import { Button } from 'antd'
+import { Button, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { useAuth } from 'context/auth-context'
 import ProjectListScreen from 'screens/project-list'
+import { Row } from 'components/lib'
+// import softwareLogin from 'assets/software-logo.svg'
+import { ReactComponent as SoftWareLogo } from 'assets/software-logo.svg'
 
 export const AuthenticatedApp = () => {
-	const { logout } = useAuth()
+	const { logout, user } = useAuth()
 
 	return (
 		<Container>
-			<Header>
-				<HeaderLeft>
-					Logo
-					<div>Title xxx....</div>
-					<span>span 内容</span>
+			<Header between={true}>
+				<HeaderLeft gap={true}>
+					{/* <img src={softwareLogin} alt="" /> */}
+					{/* 以 svg 渲染, 可自定义样式 */}
+					<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
+					<h3>项目</h3>
+					<h3>用户</h3>
 				</HeaderLeft>
 				<HeaderRight>
-					<Button danger type={'primary'} onClick={logout}>
-						登出
-					</Button>
+					{/* @ts-ignore */}
+					<Dropdown
+						overlay={
+							<Menu>
+								<Menu.Item>
+									<a onClick={logout}>登出</a>
+								</Menu.Item>
+							</Menu>
+						}
+					>
+						<a onClick={e => e.preventDefault()}>Hi, {user?.name}</a>
+					</Dropdown>
 				</HeaderRight>
 			</Header>
-			<Nav>Nav</Nav>
 			<Main>
 				<ProjectListScreen />
 			</Main>
-			<ASide>aside</ASide>
-			<Footer>footer</Footer>
 		</Container>
 	)
 }
 
 const Container = styled.div`
 	display: grid;
-	grid-template-rows: 6rem 1fr 6rem;
-	grid-template-columns: 12rem 1fr 12rem;
+	grid-template-rows: 6rem 1fr;
 	grid-template-areas:
-		'header header header'
-		'nav main aside'
-		'footer footer footer';
+		'header'
+		'main';
 	height: 100vh;
-	grid-gap: 3.2rem;
 `
 
-const Header = styled.header`
+const Header = styled(Row)`
 	grid-area: header;
-	background: #f2f2f2;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	padding: 3.2rem;
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+	z-index: 1;
 `
 
-const HeaderLeft = styled.div`
-	display: flex;
-	align-items: center;
-`
-const HeaderRight = styled.div`
-	display: flex;
-	align-items: center;
-`
+const HeaderLeft = styled(Row)``
 
-const Nav = styled.nav`
-	grid-area: nav;
+const HeaderRight = styled(Row)`
+	color: rgb(38, 132, 255);
+	cursor: pointer;
 `
 
 const Main = styled.div`
 	grid-area: main;
-`
-
-const ASide = styled.aside`
-	grid-area: aside;
-`
-
-const Footer = styled.footer`
-	grid-area: footer;
-	background: #f2f2f2;
 `

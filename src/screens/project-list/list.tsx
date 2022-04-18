@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react'
 import { Table } from 'antd'
+import dayjs from 'dayjs'
 
 export interface User {
 	id: number
@@ -11,8 +11,8 @@ interface Project {
 	id: number
 	name: string
 	personId: number
-	organization: string
-	created: number
+	organization: string //	部门
+	created: number //	时间
 }
 
 interface ListPros {
@@ -26,13 +26,21 @@ const List = ({ list, users }: ListPros) => {
 			columns={[
 				{
 					title: '项目名称',
-					key: 'name',
 					dataIndex: 'name',
 				},
 				{
+					title: '部门',
+					dataIndex: 'organization',
+				},
+				{
+					title: '时间',
+					render(value, project) {
+						return <span>{project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'}</span>
+					},
+				},
+				{
 					title: '负责人',
-					key: 'personId',
-					render(project) {
+					render(value, project) {
 						return <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>
 					},
 				},
