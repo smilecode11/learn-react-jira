@@ -46,23 +46,23 @@ export const useHttp = () => {
 	return (...[endpoint, config]: Parameters<typeof http>) => http(endpoint, { ...config, token: user?.token })
 }
 
-//  Utility type: Partial Omit Parameters
-type Person = {
-	name: string
-	age: number
-}
+// //  Utility type: Partial Omit Parameters
+// type Person = {
+// 	name: string
+// 	age: number
+// }
 
-//  Partial, 让属性变成非必需
-const xiaoMing: Partial<Person> = { name: 'xiao ming' }
+// //  Partial, 让属性变成非必需
+// const xiaoMing: Partial<Person> = { name: 'xiao ming' }
 
-//  Partial 的实现
-type Partial<T> = {
-	[P in keyof T]?: T[P]
-}
+// //  Partial 的实现
+// type Partial<T> = {
+// 	[P in keyof T]?: T[P]
+// }
 
-//  Omit, 剔除属性 -> 属性非必须
-const shenMiRen: Omit<Person, 'name'> = { age: 27 }
-const shenMiRen2: Omit<Person, 'name' | 'age'> = {}
+// //  Omit, 剔除属性 -> 属性非必须
+// const shenMiRen: Omit<Person, 'name'> = { age: 27 }
+// const shenMiRen2: Omit<Person, 'name' | 'age'> = {}
 
-//  Parameters 读取函数参数定义
-type httpType = Parameters<typeof http>
+// //  Parameters 读取函数参数定义
+// type httpType = Parameters<typeof http>
