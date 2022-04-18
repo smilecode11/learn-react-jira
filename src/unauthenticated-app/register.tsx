@@ -1,5 +1,6 @@
 import { useAuth } from 'context/auth-context'
-import { Button, Form, Input } from 'antd'
+import { Form, Input } from 'antd'
+import { LoginButton } from './login'
 
 const LoginScreen = () => {
 	//	从 useAuth 中获取登录方法及登录用户信息
@@ -21,9 +22,9 @@ const LoginScreen = () => {
 				<Input placeholder={'密码'} type="password" id={'password'} />
 			</Form.Item>
 			<Form.Item>
-				<Button type={'primary'} htmlType={'submit'}>
+				<LoginButton type={'primary'} htmlType={'submit'}>
 					注册
-				</Button>
+				</LoginButton>
 			</Form.Item>
 		</Form>
 	)

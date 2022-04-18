@@ -66,5 +66,12 @@
 ## CSS-in-JS
 
 - Emotion
+
   - 安装 `cnpm i -S @emotion/react @emotion/styled`
   - 安装 vscode 插件 `vscode-styled-components`
+
+- grid 和 flex 使用
+  - 考虑, 是一维布局还是二维布局, 一般莱索, 一维使用 flex, 二维使用 grid
+  - 考虑是从内容出发还是从布局出发
+    - 从内容出发: 有一组内容(数量不固定), 希望他们均匀分布在容器中, 由内容自动填充, 使用 flex
+    - 从布局出发: 先规划网格(数量一般固定), 再把元素往里填充. 使用 grid
