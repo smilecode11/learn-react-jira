@@ -23,6 +23,7 @@ const ProjectList = () => {
 
 	useEffect(() => {
 		client('projects', { data: cleanObject(debouncedParam) }).then(list => setList(list))
+		// eslint-disable-next-line
 	}, [debouncedParam])
 
 	useDidMount(() => {
