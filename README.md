@@ -60,3 +60,11 @@
 - Utility type: Partial Omit Parameters
 
 ## context 使用
+
+- 管理全局状态
+
+## CSS-in-JS
+
+- Emotion
+  - 安装 `cnpm i -S @emotion/react @emotion/styled`
+  - 安装 vscode 插件 `vscode-styled-components`

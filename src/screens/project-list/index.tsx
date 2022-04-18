@@ -5,7 +5,6 @@
  * 		TypeScript 强类型语言使用
  */
 import { useEffect, useState } from 'react'
-import './index.css'
 import { cleanObject, useDidMount, useDebounce } from 'utils'
 import { useHttp } from 'utils/http'
 

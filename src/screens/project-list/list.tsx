@@ -1,3 +1,6 @@
+import { render } from '@testing-library/react'
+import { Table } from 'antd'
+
 export interface User {
 	id: number
 	name: string
@@ -19,25 +22,24 @@ interface ListPros {
 
 const List = ({ list, users }: ListPros) => {
 	return (
-		//  @ts-ignore
-		<table border="1">
-			<thead>
-				<tr>
-					<th>名称</th>
-					<th>负责人</th>
-				</tr>
-			</thead>
-			<tbody>
-				{list.map(item => {
-					return (
-						<tr key={item.id}>
-							<td>{item.name}</td>
-							<td>{users.find(user => user.id === item.personId)?.name || '未知'}</td>
-						</tr>
-					)
-				})}
-			</tbody>
-		</table>
+		<Table
+			columns={[
+				{
+					title: '项目名称',
+					key: 'name',
+					dataIndex: 'name',
+				},
+				{
+					title: '负责人',
+					key: 'personId',
+					render(project) {
+						return <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>
+					},
+				},
+			]}
+			dataSource={list}
+			pagination={false}
+		></Table>
 	)
 }
 
