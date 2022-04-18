@@ -1,16 +1,19 @@
 import { useAuth } from 'context/auth-context'
 import { Button, Form, Input } from 'antd'
 import styled from '@emotion/styled'
+import { useAsync } from 'utils/use-async'
 
-const LoginScreen = () => {
+const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
 	//	从 useAuth 中获取登录方法及登录用户信息
 	const { login } = useAuth()
+	const { run, isLoading } = useAsync(undefined, { throwOnError: true })
 
-	const handleSubmit = (values: { username: string; password: string }) => {
-		login({
-			username: values.username,
-			password: values.password,
-		})
+	const handleSubmit = async (values: { username: string; password: string }) => {
+		try {
+			await run(login(values))
+		} catch (e: any) {
+			onError(e)
+		}
 	}
 
 	return (
@@ -22,7 +25,7 @@ const LoginScreen = () => {
 				<Input placeholder={'密码'} type="password" id={'password'} />
 			</Form.Item>
 			<Form.Item>
-				<LoginButton type={'primary'} htmlType={'submit'}>
+				<LoginButton loading={isLoading} type={'primary'} htmlType={'submit'}>
 					登录
 				</LoginButton>
 			</Form.Item>

@@ -3,6 +3,8 @@ import * as auth from 'auth-provider'
 import { User } from 'screens/project-list/list'
 import { http } from 'utils/http'
 import { useDidMount } from 'utils'
+import { useAsync } from 'utils/use-async'
+import { FullPageLoading, FullPageErrorFallback } from 'components/lib'
 
 interface AuthForm {
 	username: string
@@ -31,7 +33,7 @@ const AuthContext = React.createContext<AuthProps | undefined>(undefined)
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const [user, setUser] = useState<User | null>(null)
+	const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
 
 	const register = (form: AuthForm) => auth.register(form).then(setUser) //  user => setUser(user)
 	const login = (form: AuthForm) => auth.login(form).then(setUser)
@@ -39,8 +41,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	//  effect 模拟的生命周期中执行 user 初始化赋值
 	useDidMount(() => {
-		initializeUser().then(setUser)
+		run(initializeUser())
 	})
+
+	if (isIdle || isLoading) {
+		return <FullPageLoading></FullPageLoading>
+	}
+
+	if (isError) {
+		return <FullPageErrorFallback error={error}></FullPageErrorFallback>
+	}
 
 	return <AuthContext.Provider children={children} value={{ user, login, register, logout }}></AuthContext.Provider>
 }
