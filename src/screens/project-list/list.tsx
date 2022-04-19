@@ -30,7 +30,7 @@ const List = ({ users, ...props }: ListPros) => {
 					title: '项目名称',
 					key: 'name',
 					render(value, project) {
-						return <Link to={String(project.id)}>{project.name}</Link>
+						return <Link to={`/projects/${String(project.id)}`}>{project.name}</Link>
 					},
 				},
 				{

@@ -8,6 +8,7 @@ import { ProjectScreen } from 'screens/project'
 // import softwareLogin from 'assets/software-logo.svg'
 import { ReactComponent as SoftWareLogo } from 'assets/software-logo.svg'
 import { Row } from 'components/lib'
+import { resetRoute } from 'utils'
 
 export const AuthenticatedApp = () => {
 	return (
@@ -18,6 +19,7 @@ export const AuthenticatedApp = () => {
 					<Routes>
 						<Route path={'/projects'} element={<ProjectListScreen />} />
 						<Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
+						<Route index element={<ProjectListScreen />} />
 					</Routes>
 				</Router>
 			</Main>
@@ -32,7 +34,9 @@ export const PageHeader = () => {
 			<HeaderLeft gap={true}>
 				{/* <img src={softwareLogin} alt="" /> */}
 				{/* 以 svg 渲染, 可自定义样式 */}
-				<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
+				<Button type={'link'} onClick={resetRoute}>
+					<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
+				</Button>
 				<h3>项目</h3>
 				<h3>用户</h3>
 			</HeaderLeft>
