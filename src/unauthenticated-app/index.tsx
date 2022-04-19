@@ -1,6 +1,5 @@
 import { Button, Card, Typography } from 'antd'
 import { useState } from 'react'
-import { Helmet } from 'react-helmet'
 import LoginScreen from './login'
 import RegisterScreen from './register'
 
@@ -8,16 +7,16 @@ import styled from '@emotion/styled'
 import logo from 'assets/logo.svg'
 import left from 'assets/left.svg'
 import right from 'assets/right.svg'
+import { useDocumentTitle } from 'utils'
 
 export const UnauthenticatedApp = () => {
 	const [isRegister, setIsRegister] = useState(false)
 	const [error, setError] = useState<Error | null>(null)
 
+	useDocumentTitle('请登录或注册, 已便下步操作', false)
+
 	return (
 		<Container>
-			<Helmet>
-				<title>登录|注册, 已进行下步操作</title>
-			</Helmet>
 			<Header />
 			<Background />
 			<CardShadow style={{ width: '320px', minHeight: '200px', margin: '0 auto' }}>

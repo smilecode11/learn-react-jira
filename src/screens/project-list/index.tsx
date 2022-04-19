@@ -5,8 +5,7 @@
  * 		TypeScript 强类型语言使用
  */
 import { useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { useDebounce } from 'utils'
+import { useDebounce, useDocumentTitle } from 'utils'
 
 import SearchPanel from './search-panel'
 import List from './list'
@@ -14,8 +13,12 @@ import styled from '@emotion/styled'
 import { Typography } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
+import { Test } from 'components/test-closure'
 
 const ProjectList = () => {
+	// 设置标题, 并给予 keepOnUnmount 值设置 false, 当前设置不影响其他页面的标题设置
+	useDocumentTitle('项目列表', false)
+
 	const [param, setParam] = useState({ name: '', personId: '' })
 	// 赋予 param 防抖能力
 	const debouncedParam = useDebounce(param, 700)
@@ -24,13 +27,11 @@ const ProjectList = () => {
 
 	return (
 		<Container>
-			<Helmet>
-				<title>项目列表</title>
-			</Helmet>
 			<h2>项目列表</h2>
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
 			<List loading={isLoading} users={users || []} dataSource={list || []}></List>
+			<Test />
 		</Container>
 	)
 }

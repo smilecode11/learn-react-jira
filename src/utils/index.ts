@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const isFalsy = (value: unknown) => {
 	return value === 0 ? false : !value
@@ -74,4 +74,25 @@ export const useArray = <T>(initialArray: T[]) => {
 			setValue(copyObject)
 		},
 	}
+}
+
+/**
+ * 自定义 hook, 实现页面变更, title 改变
+ * @param title 要设置的标题
+ * @param keepOnUnmount 是否在组件卸载时保存设置
+ */
+export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
+	const oldTitle = useRef(document.title).current
+
+	useEffect(() => {
+		document.title = title
+	}, [title])
+
+	useEffect(() => {
+		return () => {
+			if (!keepOnUnmount) {
+				document.title = oldTitle
+			}
+		}
+	}, [keepOnUnmount, oldTitle])
 }
