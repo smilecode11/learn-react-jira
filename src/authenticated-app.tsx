@@ -1,45 +1,58 @@
 import { Button, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
+import { Routes, Route } from 'react-router'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { useAuth } from 'context/auth-context'
 import ProjectListScreen from 'screens/project-list'
-import { Row } from 'components/lib'
+import { ProjectScreen } from 'screens/project'
 // import softwareLogin from 'assets/software-logo.svg'
 import { ReactComponent as SoftWareLogo } from 'assets/software-logo.svg'
+import { Row } from 'components/lib'
 
 export const AuthenticatedApp = () => {
-	const { logout, user } = useAuth()
-
 	return (
 		<Container>
-			<Header between={true}>
-				<HeaderLeft gap={true}>
-					{/* <img src={softwareLogin} alt="" /> */}
-					{/* 以 svg 渲染, 可自定义样式 */}
-					<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
-					<h3>项目</h3>
-					<h3>用户</h3>
-				</HeaderLeft>
-				<HeaderRight>
-					{/* @ts-ignore */}
-					<Dropdown
-						overlay={
-							<Menu>
-								<Menu.Item key={'logout'}>
-									<Button type={'link'} danger onClick={logout}>
-										登出
-									</Button>
-								</Menu.Item>
-							</Menu>
-						}
-					>
-						<Button type={'link'}>Hi, {user?.name}</Button>
-					</Dropdown>
-				</HeaderRight>
-			</Header>
+			<PageHeader />
 			<Main>
-				<ProjectListScreen />
+				<Router>
+					<Routes>
+						<Route path={'/projects'} element={<ProjectListScreen />} />
+						<Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
+					</Routes>
+				</Router>
 			</Main>
 		</Container>
+	)
+}
+
+export const PageHeader = () => {
+	const { logout, user } = useAuth()
+	return (
+		<Header between={true}>
+			<HeaderLeft gap={true}>
+				{/* <img src={softwareLogin} alt="" /> */}
+				{/* 以 svg 渲染, 可自定义样式 */}
+				<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
+				<h3>项目</h3>
+				<h3>用户</h3>
+			</HeaderLeft>
+			<HeaderRight>
+				{/* @ts-ignore */}
+				<Dropdown
+					overlay={
+						<Menu>
+							<Menu.Item key={'logout'}>
+								<Button type={'link'} danger onClick={logout}>
+									登出
+								</Button>
+							</Menu.Item>
+						</Menu>
+					}
+				>
+					<Button type={'link'}>Hi, {user?.name}</Button>
+				</Dropdown>
+			</HeaderRight>
+		</Header>
 	)
 }
 

@@ -13,7 +13,7 @@ import styled from '@emotion/styled'
 import { Typography } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
-import { Test } from 'components/test-closure'
+// import { Test } from 'components/test-closure'
 
 const ProjectList = () => {
 	// 设置标题, 并给予 keepOnUnmount 值设置 false, 当前设置不影响其他页面的标题设置
@@ -31,7 +31,7 @@ const ProjectList = () => {
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
 			<List loading={isLoading} users={users || []} dataSource={list || []}></List>
-			<Test />
+			{/* <Test /> */}
 		</Container>
 	)
 }
