@@ -1,5 +1,6 @@
 import { Button, Card, Typography } from 'antd'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import LoginScreen from './login'
 import RegisterScreen from './register'
 
@@ -14,6 +15,9 @@ export const UnauthenticatedApp = () => {
 
 	return (
 		<Container>
+			<Helmet>
+				<title>登录|注册, 已进行下步操作</title>
+			</Helmet>
 			<Header />
 			<Background />
 			<CardShadow style={{ width: '320px', minHeight: '200px', margin: '0 auto' }}>

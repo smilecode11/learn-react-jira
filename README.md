@@ -81,3 +81,8 @@
 - 处理请求时交互 useAsync 封装
 - 处理请求登录全局 loading
 - 处理请求失败全局 error
+
+### 自定义头部信息
+
+- 方案一: 使用 react-helmet 进行支持
+- 方案二: 自定义 hook 实现

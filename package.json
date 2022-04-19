@@ -27,13 +27,15 @@
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@craco/craco": "^6.4.3",
+    "@types/react-helmet": "^6.1.5",
     "craco-less": "^2.0.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
     "json-server": "^0.17.0",
     "lint-staged": "^12.3.7",
     "msw": "^0.39.2",
-    "prettier": "2.6.2"
+    "prettier": "2.6.2",
+    "react-helmet": "^6.1.0"
   },
   "scripts": {
     "start": "craco start",

@@ -5,6 +5,7 @@
  * 		TypeScript 强类型语言使用
  */
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDebounce } from 'utils'
 
 import SearchPanel from './search-panel'
@@ -23,6 +24,9 @@ const ProjectList = () => {
 
 	return (
 		<Container>
+			<Helmet>
+				<title>项目列表</title>
+			</Helmet>
 			<h2>项目列表</h2>
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
