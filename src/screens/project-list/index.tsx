@@ -20,7 +20,7 @@ const ProjectList = () => {
 	useDocumentTitle('项目列表', false)
 
 	const [param, setParam] = useProjectsSearchParams()
-	const { isLoading, data: list, error } = useProjects(useDebounce(param, 200))
+	const { isLoading, data: list, error, retry } = useProjects(useDebounce(param, 200))
 	const { data: users } = useUsers()
 
 	return (
@@ -28,7 +28,7 @@ const ProjectList = () => {
 			<h2>项目列表</h2>
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
-			<List loading={isLoading} users={users || []} dataSource={list || []}></List>
+			<List refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}></List>
 		</Container>
 	)
 }

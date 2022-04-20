@@ -24,6 +24,7 @@ export interface Project {
 
 interface ListPros extends TableProps<Project> {
 	users: User[]
+	refresh?: () => void
 }
 
 const List = ({ users, ...props }: ListPros) => {
@@ -31,7 +32,7 @@ const List = ({ users, ...props }: ListPros) => {
 
 	// const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
 	//	函数式编程写法
-	const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
+	const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
 
 	return (
 		<Table
