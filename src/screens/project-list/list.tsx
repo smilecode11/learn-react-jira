@@ -3,15 +3,18 @@ import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 
 export interface User {
-	id: string
+	id: number
 	name: string
+	email: string
+	title: string
+	organization: string
 	token: string
 }
 
 export interface Project {
 	id: number
 	name: string
-	personId: string
+	personId: number
 	organization: string //	部门
 	created: number //	时间
 }

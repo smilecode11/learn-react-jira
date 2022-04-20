@@ -5,7 +5,7 @@ export const isFalsy = (value: unknown) => {
 }
 
 export const isVoid = (value: unknown) => {
-	return value === 'undefined' || value === 'null' || value === ''
+	return value === undefined || value === null || value === ''
 }
 
 /** 清除对象中空值*/
