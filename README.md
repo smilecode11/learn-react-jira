@@ -86,3 +86,27 @@
 
 - 方案一: 使用 react-helmet 进行支持
 - 方案二: 自定义 hook 实现
+
+### Param 参数获取使用
+
+- 自定义 hook `useUrlQueryParam` 实现
+- `why-did-you-render` 库的使用的错误排查 [why-did-you-render git](https://github.com/welldone-software/why-did-you-render)
+
+  - 安装 `cnpm i -D @welldone-software/why-did-you-render`
+  - 添加文件 wdyr.js 写入代码
+
+    ```js
+    import React from 'react'
+    if (process.env.NODE_ENV === 'development') {
+    	const whyDidYouRender = require('@welldone-software/why-did-you-render')
+    	whyDidYouRender(React, {
+    		trackAllPureComponents: true, //  是否监听全部组件
+    	})
+    }
+
+    //  index.tsx 引入 whdr.js, 必须在第一行
+    import './wdyr'
+
+    //  其他 ts 文件, 如何执行单个组件监听呢
+    OtherComponentName.whyDidYouRender = true
+    ```

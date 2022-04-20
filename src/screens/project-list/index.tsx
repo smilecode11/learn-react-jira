@@ -13,13 +13,14 @@ import styled from '@emotion/styled'
 import { Typography } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
+import { useUrlQueryParam } from 'utils/url'
 // import { Test } from 'components/test-closure'
 
 const ProjectList = () => {
 	// 设置标题, 并给予 keepOnUnmount 值设置 false, 当前设置不影响其他页面的标题设置
 	useDocumentTitle('项目列表', false)
-
-	const [param, setParam] = useState({ name: '', personId: '' })
+	//	基本类型, 可以放到依赖里, 组件状态可以放到依赖里; 非组件状态的对象, 绝不可以放到依赖里
+	const [param, setParam] = useUrlQueryParam(['name', 'personId'])
 	// 赋予 param 防抖能力
 	const debouncedParam = useDebounce(param, 700)
 	const { isLoading, data: list, error } = useProjects(debouncedParam)
@@ -35,6 +36,8 @@ const ProjectList = () => {
 		</Container>
 	)
 }
+
+// ProjectList.whyDidYouRender = true
 
 export default ProjectList
 

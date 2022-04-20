@@ -17,6 +17,7 @@ const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
 				<Input
 					type="text"
 					placeholder={'项目名'}
+					defaultValue={param.name}
 					onChange={ev =>
 						setParam({
 							...param,
@@ -39,7 +40,7 @@ const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
 					<Select.Option value={''}>请选择</Select.Option>
 					{users.map(user => {
 						return (
-							<Select.Option key={user.id} value={user.id}>
+							<Select.Option key={String(user.id)} value={String(user.id)}>
 								{user.name}
 							</Select.Option>
 						)
