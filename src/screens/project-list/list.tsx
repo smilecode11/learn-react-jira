@@ -1,4 +1,5 @@
-import { Table, TableProps } from 'antd'
+import { Dropdown, Menu, Table, TableProps } from 'antd'
+import { ButtonNoPadding } from 'components/lib'
 import { Pin } from 'components/pin'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
@@ -25,6 +26,7 @@ export interface Project {
 interface ListPros extends TableProps<Project> {
 	users: User[]
 	refresh?: () => void
+	setProjectModalOpen: (visible: boolean) => void
 }
 
 const List = ({ users, ...props }: ListPros) => {
@@ -67,6 +69,31 @@ const List = ({ users, ...props }: ListPros) => {
 					title: '负责人',
 					render(value, project) {
 						return <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>
+					},
+				},
+				{
+					render(value, project) {
+						return (
+							// @ts-ignore
+							<Dropdown
+								overlay={
+									<Menu style={{ minWidth: '0.6rem' }}>
+										<Menu.Item key={'edit'}>
+											<ButtonNoPadding onClick={() => props.setProjectModalOpen(true)} type={'link'}>
+												编辑
+											</ButtonNoPadding>
+										</Menu.Item>
+										<Menu.Item key={'delete'}>
+											<ButtonNoPadding type={'link'} danger>
+												删除
+											</ButtonNoPadding>
+										</Menu.Item>
+									</Menu>
+								}
+							>
+								<ButtonNoPadding type={'link'}>...</ButtonNoPadding>
+							</Dropdown>
+						)
 					},
 				},
 			]}

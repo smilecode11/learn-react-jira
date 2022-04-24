@@ -9,14 +9,15 @@ import { useDebounce, useDocumentTitle } from 'utils'
 import SearchPanel from './search-panel'
 import List from './list'
 import styled from '@emotion/styled'
-import { Typography } from 'antd'
+import { Button, Divider, Typography } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
 import { useProjectsSearchParams } from './util'
+import { Row } from 'components/lib'
 
 //	基本类型, 可以放到依赖里, 组件状态可以放到依赖里; 非组件状态的对象, 绝不可以放到依赖里
 
-const ProjectList = () => {
+const ProjectList = (props: { setProjectModalOpen: (visible: boolean) => void }) => {
 	useDocumentTitle('项目列表', false)
 
 	const [param, setParam] = useProjectsSearchParams()
@@ -25,10 +26,14 @@ const ProjectList = () => {
 
 	return (
 		<Container>
-			<h2>项目列表</h2>
+			<Row between={true}>
+				<h2>项目列表</h2>
+				<Button onClick={() => props.setProjectModalOpen(true)}>新建项目</Button>
+			</Row>
+			<Divider />
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
-			<List refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}></List>
+			<List setProjectModalOpen={props.setProjectModalOpen} refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}></List>
 		</Container>
 	)
 }

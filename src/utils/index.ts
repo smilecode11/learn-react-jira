@@ -100,9 +100,11 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) =
 /** 路由重置*/
 export const resetRoute = () => (window.location.href = window.location.origin)
 
-/** 自定义 hook, 保存组件状态
+/**
+ * 自定义 hook, 保存组件状态
  * 组件加载时: mountedRef.current 值是 true
  * 组件卸载时: mountedRef.current 值是 false
+ * @returns
  */
 export const useMountedRef = () => {
 	const mountedRef = useRef(false)

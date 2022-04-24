@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu } from 'antd'
+import { Button, Drawer, Dropdown, Menu, Popover } from 'antd'
 import styled from '@emotion/styled'
 import { Routes, Route } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -9,36 +9,43 @@ import { ProjectScreen } from 'screens/project'
 import { ReactComponent as SoftWareLogo } from 'assets/software-logo.svg'
 import { Row } from 'components/lib'
 import { resetRoute } from 'utils'
+import { useState } from 'react'
+import { ProjectPopover } from 'components/project-popover'
 
 export const AuthenticatedApp = () => {
+	const [projectModalOpen, setProjectModalOpen] = useState(false)
+
 	return (
 		<Container>
-			<PageHeader />
+			<PageHeader setProjectModalOpen={setProjectModalOpen} />
 			<Main>
 				<Router>
 					<Routes>
-						<Route path={'/projects'} element={<ProjectListScreen />} />
+						<Route path={'/projects'} element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />} />
 						<Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
-						<Route index element={<ProjectListScreen />} />
+						<Route index element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />} />
 					</Routes>
 				</Router>
 			</Main>
+			{/* 项目编辑弹窗 */}
+			<Drawer placement={'right'} visible={projectModalOpen} width={'100%'} zIndex={9999} onClose={() => setProjectModalOpen(false)}>
+				<Button onClick={() => setProjectModalOpen(false)}>关闭</Button>
+			</Drawer>
 		</Container>
 	)
 }
 
-export const PageHeader = () => {
+export const PageHeader = ({ setProjectModalOpen }: { setProjectModalOpen: (visible: boolean) => void }) => {
 	const { logout, user } = useAuth()
 	return (
 		<Header between={true}>
 			<HeaderLeft gap={true}>
-				{/* <img src={softwareLogin} alt="" /> */}
-				{/* 以 svg 渲染, 可自定义样式 */}
 				<Button type={'link'} onClick={resetRoute}>
+					{/* 以 svg 渲染, 可自定义样式 */}
 					<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
 				</Button>
-				<h3>项目</h3>
-				<h3>用户</h3>
+				<ProjectPopover setProjectModalOpen={setProjectModalOpen}></ProjectPopover>
+				<CursorText>用户</CursorText>
 			</HeaderLeft>
 			<HeaderRight>
 				{/* @ts-ignore */}
@@ -85,4 +92,7 @@ const HeaderRight = styled(Row)`
 
 const Main = styled.div`
 	grid-area: main;
+`
+export const CursorText = styled.div`
+	cursor: pointer;
 `
