@@ -7,9 +7,9 @@ import ProjectListScreen from 'screens/project-list'
 import { ProjectScreen } from 'screens/project'
 // import softwareLogin from 'assets/software-logo.svg'
 import { ReactComponent as SoftWareLogo } from 'assets/software-logo.svg'
-import { Row } from 'components/lib'
+import { ButtonNoPadding, Row } from 'components/lib'
 import { resetRoute } from 'utils'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ProjectPopover } from 'components/project-popover'
 
 export const AuthenticatedApp = () => {
@@ -17,13 +17,41 @@ export const AuthenticatedApp = () => {
 
 	return (
 		<Container>
-			<PageHeader setProjectModalOpen={setProjectModalOpen} />
+			<PageHeader
+				projectButton={
+					<ButtonNoPadding type={'link'} onClick={() => setProjectModalOpen(true)}>
+						创建项目
+					</ButtonNoPadding>
+				}
+			/>
 			<Main>
 				<Router>
 					<Routes>
-						<Route path={'/projects'} element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />} />
+						<Route
+							path={'/projects'}
+							element={
+								<ProjectListScreen
+									projectButton={
+										<ButtonNoPadding type={'link'} onClick={() => setProjectModalOpen(true)}>
+											创建项目
+										</ButtonNoPadding>
+									}
+								/>
+							}
+						/>
 						<Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
-						<Route index element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />} />
+						<Route
+							index
+							element={
+								<ProjectListScreen
+									projectButton={
+										<ButtonNoPadding type={'link'} onClick={() => setProjectModalOpen(true)}>
+											创建项目
+										</ButtonNoPadding>
+									}
+								/>
+							}
+						/>
 					</Routes>
 				</Router>
 			</Main>
@@ -35,16 +63,15 @@ export const AuthenticatedApp = () => {
 	)
 }
 
-export const PageHeader = ({ setProjectModalOpen }: { setProjectModalOpen: (visible: boolean) => void }) => {
+export const PageHeader = (props: { projectButton: JSX.Element }) => {
 	const { logout, user } = useAuth()
 	return (
 		<Header between={true}>
 			<HeaderLeft gap={true}>
 				<Button type={'link'} onClick={resetRoute}>
-					{/* 以 svg 渲染, 可自定义样式 */}
 					<SoftWareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
 				</Button>
-				<ProjectPopover setProjectModalOpen={setProjectModalOpen}></ProjectPopover>
+				<ProjectPopover {...props}></ProjectPopover>
 				<CursorText>用户</CursorText>
 			</HeaderLeft>
 			<HeaderRight>
