@@ -1,52 +1,76 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export const useUndo = <T>(initialPresent: T) => {
-	const [past, setPast] = useState<T[]>([]) //  从前动作
-	const [future, setFuture] = useState<T[]>([]) //  未来动作
-	const [present, setPresent] = useState(initialPresent) //  当前动作
+	const [state, setState] = useState<{
+		past: T[]
+		future: T[]
+		present: T
+	}>({
+		past: [], //  从前动作
+		future: [], //  未来动作
+		present: initialPresent, //  当前动作
+	})
 
-	const canUndo = past.length !== 0
-	const canRedo = future.length !== 0
+	const canUndo = state.past.length !== 0
+	const canRedo = state.future.length !== 0
 
 	//  撤销 -> 找从前
-	const undo = () => {
-		if (!canUndo) return
+	const undo = useCallback(() => {
+		setState(currentState => {
+			let { past, future, present } = currentState
+			if (past.length === 0) return currentState
 
-		const previous = past[past.length - 1]
-		const newPast = past.slice(0, past.length - 1)
+			let previous = past[past.length - 1]
+			const newPast = past.slice(0, past.length - 1)
 
-		setPast(newPast) //  从前减一
-		setPresent(previous) //  当前
-		setFuture([present, ...future]) //  未来加一
-	}
+			return {
+				past: newPast,
+				present: previous,
+				future: [present, ...future],
+			}
+		})
+	}, [])
 
 	//  前进 -> 找未来
-	const redo = () => {
-		if (!canRedo) return
+	const redo = useCallback(() => {
+		setState(currentState => {
+			let { past, future, present } = currentState
+			if (future.length === 0) return currentState
 
-		const next = future[0]
-		const newFuture = future.slice(1)
+			const next = future[0]
+			const newFuture = future.slice(1)
 
-		setPast([...past, present])
-		setPresent(next)
-		setFuture(newFuture)
-	}
+			return {
+				past: [...past, present],
+				present: next,
+				future: newFuture,
+			}
+		})
+	}, [])
 
-	const set = (newPresent: T) => {
-		if (newPresent === present) return
-		setPast([...past, present])
-		setPresent(newPresent)
-		setFuture([])
-	}
+	//  设置
+	const set = useCallback((newPresent: T) => {
+		setState(currentState => {
+			let { past, present } = currentState
+			if (newPresent === present) return currentState
 
-	const reset = (newPresent: T) => {
-		setPast([])
-		setPresent(newPresent)
-		setFuture([])
-	}
+			return {
+				past: [...past, present],
+				present: newPresent,
+				future: [],
+			}
+		})
+	}, [])
 
-	return [
-		{ past, future, present },
-		{ undo, redo, set, reset },
-	] as const
+	const reset = useCallback((newPresent: T) => {
+		setState(() => {
+			return {
+				past: [],
+				present: newPresent,
+				future: [],
+			}
+		})
+	}, [])
+
+	return [state, { undo, redo, set, reset, canRedo, canUndo }] as const
 }
