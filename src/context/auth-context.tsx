@@ -1,25 +1,21 @@
-import React, { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 import * as auth from 'auth-provider'
 import { User } from 'screens/project-list/list'
 import { http } from 'utils/http'
 import { useDidMount } from 'utils'
 import { useAsync } from 'utils/use-async'
 import { FullPageLoading, FullPageErrorFallback } from 'components/lib'
+import * as authStore from 'store/auth.slice'
+import { bootstrap, selectUser } from 'store/auth.slice'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface AuthForm {
+export interface AuthForm {
 	username: string
 	password: string
 }
 
-interface AuthProps {
-	user: User | null
-	login: (form: AuthForm) => Promise<void>
-	register: (form: AuthForm) => Promise<void>
-	logout: () => Promise<void>
-}
-
 /** 初始化 user*/
-const initializeUser = async () => {
+export const bootstrapUser = async () => {
 	let user = null
 	const token = auth.getToken()
 	if (token) {
@@ -29,19 +25,12 @@ const initializeUser = async () => {
 	return user
 }
 
-const AuthContext = React.createContext<AuthProps | undefined>(undefined)
-AuthContext.displayName = 'AuthContext'
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
+	const { error, isLoading, isIdle, isError, run } = useAsync<User | null>()
+	const dispatch: (...args: any[]) => Promise<User> = useDispatch()
 
-	const register = (form: AuthForm) => auth.register(form).then(setUser) //  user => setUser(user)
-	const login = (form: AuthForm) => auth.login(form).then(setUser)
-	const logout = () => auth.logout().then(() => setUser(null))
-
-	//  effect 模拟的生命周期中执行 user 初始化赋值
 	useDidMount(() => {
-		run(initializeUser())
+		run(dispatch(bootstrap()))
 	})
 
 	if (isIdle || isLoading) {
@@ -52,14 +41,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return <FullPageErrorFallback error={error}></FullPageErrorFallback>
 	}
 
-	return <AuthContext.Provider children={children} value={{ user, login, register, logout }}></AuthContext.Provider>
+	return <div>{children}</div>
 }
 
 /** 定义 useAuth, 方便在子孙组件中使用 user auth */
 export const useAuth = () => {
-	const context = React.useContext(AuthContext)
-	if (!context) {
-		throw new Error('authAuth 必须在 AuthProvider 中使用')
+	//	显示声明 dispatch 传递参数和返回结果
+	const dispatch: (...args: any[]) => Promise<User> = useDispatch()
+	const user = useSelector(selectUser)
+	const login = useCallback((form: AuthForm) => dispatch(authStore.login(form)), [dispatch])
+	const register = useCallback((form: AuthForm) => dispatch(authStore.register(form)), [dispatch])
+	const logout = useCallback(() => dispatch(authStore.logout()), [dispatch])
+
+	return {
+		user,
+		login,
+		register,
+		logout,
 	}
-	return context
 }
