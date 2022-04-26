@@ -4,6 +4,7 @@ import { Pin } from 'components/pin'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 import { useEditProject } from 'utils/project'
+import { useProjectModal } from './util'
 
 export interface User {
 	id: number
@@ -26,12 +27,12 @@ export interface Project {
 interface ListPros extends TableProps<Project> {
 	users: User[]
 	refresh?: () => void
-	projectButton?: JSX.Element
 }
 
 const List = ({ users, ...props }: ListPros) => {
-	const { mutate } = useEditProject()
+	const { open } = useProjectModal()
 
+	const { mutate } = useEditProject()
 	// const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
 	//	函数式编程写法
 	const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
@@ -78,7 +79,11 @@ const List = ({ users, ...props }: ListPros) => {
 							<Dropdown
 								overlay={
 									<Menu style={{ minWidth: '0.6rem' }}>
-										<Menu.Item key={'edit'}>{props.projectButton}</Menu.Item>
+										<Menu.Item key={'edit'}>
+											<ButtonNoPadding onClick={open} type={'link'}>
+												编辑
+											</ButtonNoPadding>
+										</Menu.Item>
 										<Menu.Item key={'delete'}>
 											<ButtonNoPadding type={'link'} danger>
 												删除
