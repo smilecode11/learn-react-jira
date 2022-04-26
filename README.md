@@ -110,3 +110,7 @@
     //  其他 ts 文件, 如何执行单个组件监听呢
     OtherComponentName.whyDidYouRender = true
     ```
+
+## Redux Toolkit 使用
+
+- 安装依赖 `cnpm i -S react-redux @reduxjs/tookit`
