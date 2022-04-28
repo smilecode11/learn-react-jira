@@ -9,11 +9,11 @@ import { useDebounce, useDocumentTitle } from 'utils'
 import SearchPanel from './search-panel'
 import List from './list'
 import styled from '@emotion/styled'
-import { Button, Divider, Typography } from 'antd'
+import { Button, Divider } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
 import { useProjectModal, useProjectsSearchParams } from './util'
-import { Row } from 'components/lib'
+import { ErrorBox, Row } from 'components/lib'
 
 //	基本类型, 可以放到依赖里, 组件状态可以放到依赖里; 非组件状态的对象, 绝不可以放到依赖里
 
@@ -23,7 +23,7 @@ const ProjectList = () => {
 	const { open } = useProjectModal()
 
 	const [param, setParam] = useProjectsSearchParams()
-	const { isLoading, data: list, error, retry } = useProjects(useDebounce(param, 200))
+	const { isLoading, data: list, error } = useProjects(useDebounce(param, 200))
 	const { data: users } = useUsers()
 
 	return (
@@ -34,8 +34,8 @@ const ProjectList = () => {
 			</Row>
 			<Divider />
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
-			{error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
-			<List refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}></List>
+			<ErrorBox error={error} />
+			<List loading={isLoading} users={users || []} dataSource={list || []}></List>
 		</Container>
 	)
 }

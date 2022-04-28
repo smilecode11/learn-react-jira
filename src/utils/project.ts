@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { Project } from 'screens/project-list/list'
 import { cleanObject } from 'utils'
 import { useHttp } from './http'
@@ -7,37 +8,25 @@ import { useAsync } from './use-async'
 /** 获取列表*/
 export const useProjects = (param?: Partial<Project>) => {
 	const client = useHttp()
-	const { run, ...result } = useAsync<Project[]>()
-
-	const fetchProjects = () => client('projects', { data: cleanObject(param || {}) })
-
-	useEffect(() => {
-		run(fetchProjects(), {
-			retry: fetchProjects,
-		})
-	}, [param])
-
-	return result
+	// 请求数据, 并存储到缓存区
+	return useQuery<Project[], Error>(['projects', param], () => client('projects', { data: param }))
 }
 
 /** 编辑项目*/
 export const useEditProject = () => {
 	const client = useHttp()
-	const { run, ...aysncResult } = useAsync<Project>()
 
-	const mutate = (param: Partial<Project>) => {
-		return run(
+	const queryClient = useQueryClient()
+	return useMutation(
+		(param: Partial<Project>) =>
 			client(`projects/${param.id}`, {
 				method: 'PATCH',
 				data: param,
-			})
-		)
-	}
-
-	return {
-		mutate,
-		...aysncResult,
-	}
+			}),
+		{
+			onSuccess: () => queryClient.invalidateQueries('projects'),
+		}
+	)
 }
 
 /** 新建项目*/

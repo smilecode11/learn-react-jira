@@ -114,3 +114,11 @@
 ## Redux Toolkit 使用
 
 - 安装依赖 `cnpm i -S react-redux @reduxjs/tookit`
+
+## React Query 使用
+
+使用 React Query 缓存 projects 数据
+
+## 问题
+
+- [craco-less 问题](https://github.com/DocSpring/craco-less/issues/86)
