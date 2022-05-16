@@ -1,9 +1,6 @@
-import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { Project } from 'screens/project-list/list'
-import { cleanObject } from 'utils'
 import { useHttp } from './http'
-import { useAsync } from './use-async'
 
 /** 获取列表*/
 export const useProjects = (param?: Partial<Project>) => {
@@ -32,19 +29,29 @@ export const useEditProject = () => {
 /** 新建项目*/
 export const useAddProject = () => {
 	const client = useHttp()
-	const { run, ...asyncResult } = useAsync()
 
-	const mutate = (param: Partial<Project>) => {
-		return run(
+	const queryClient = useQueryClient()
+	return useMutation(
+		(param: Partial<Project>) =>
 			client(`projects`, {
 				method: 'POST',
 				data: param,
-			})
-		)
-	}
+			}),
+		{
+			onSuccess: () => queryClient.invalidateQueries('projects'),
+		}
+	)
+}
 
-	return {
-		mutate,
-		...asyncResult,
-	}
+/** 获取项目*/
+export const useProject = (id?: number) => {
+	const client = useHttp()
+	return useQuery<Project>(
+		['project', { id }], //	配置请求数据缓存名 & 根据 id 变更再次执行
+		() => client(`projects/${id}`), //	请求返回 的 Promise
+		{
+			//	配置当 id 存在时执行
+			enabled: Boolean(id),
+		}
+	)
 }

@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { cleanObject } from 'utils'
+import { useProject } from 'utils/project'
 import { useUrlQueryParam } from 'utils/url'
 
 /** 项目列表搜索参数*/
@@ -10,14 +11,23 @@ export const useProjectsSearchParams = () => {
 
 export const useProjectModal = () => {
 	const [{ projectCreate }, setProjectCreate] = useUrlQueryParam(['projectCreate'])
+	const [{ editProjectId }, setEditProjectId] = useUrlQueryParam(['editProjectId'])
 
 	const open = () => setProjectCreate({ projectCreate: true })
-	const close = () => setProjectCreate({ projectCreate: undefined })
+	const close = () => {
+		projectCreate ? setProjectCreate({ projectCreate: undefined }) : setEditProjectId({ editProjectId: undefined })
+	}
+	const startEdit = (id?: number) => setEditProjectId({ editProjectId: id })
+
+	const { data: editingProject, isLoading } = useProject(Number(editProjectId))
 
 	return {
-		projectModalOpen: projectCreate === 'true',
+		projectModalOpen: projectCreate === 'true' || Boolean(editingProject),
 		open,
 		close,
+		startEdit,
+		editingProject,
+		isLoading,
 	}
 }
 

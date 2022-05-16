@@ -29,12 +29,14 @@ interface ListPros extends TableProps<Project> {
 }
 
 const List = ({ users, ...props }: ListPros) => {
-	const { open } = useProjectModal()
+	const { startEdit } = useProjectModal()
 
 	const { mutate } = useEditProject()
 	// const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
 	//	函数式编程写法
 	const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
+
+	const editProject = (id: number) => () => startEdit(id)
 
 	return (
 		<Table
@@ -60,15 +62,15 @@ const List = ({ users, ...props }: ListPros) => {
 					dataIndex: 'organization',
 				},
 				{
-					title: '时间',
-					render(value, project) {
-						return <span>{project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'}</span>
-					},
-				},
-				{
 					title: '负责人',
 					render(value, project) {
 						return <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>
+					},
+				},
+				{
+					title: '时间',
+					render(value, project) {
+						return <span>{project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'}</span>
 					},
 				},
 				{
@@ -77,17 +79,11 @@ const List = ({ users, ...props }: ListPros) => {
 							// @ts-ignore
 							<Dropdown
 								overlay={
-									<Menu style={{ minWidth: '0.6rem' }}>
-										<Menu.Item key={'edit'}>
-											<ButtonNoPadding onClick={open} type={'link'}>
-												编辑
-											</ButtonNoPadding>
+									<Menu>
+										<Menu.Item key={'edit'} onClick={editProject(project.id)}>
+											编辑
 										</Menu.Item>
-										<Menu.Item key={'delete'}>
-											<ButtonNoPadding type={'link'} danger>
-												删除
-											</ButtonNoPadding>
-										</Menu.Item>
+										<Menu.Item key={'delete'}>删除</Menu.Item>
 									</Menu>
 								}
 							>
