@@ -5,6 +5,7 @@ import { http } from 'utils/http'
 import { useDidMount } from 'utils'
 import { useAsync } from 'utils/use-async'
 import { FullPageLoading, FullPageErrorFallback } from 'components/lib'
+import { useQueryClient } from 'react-query'
 
 interface AuthForm {
 	username: string
@@ -34,10 +35,16 @@ AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
+	const queryClient = useQueryClient()
 
 	const register = (form: AuthForm) => auth.register(form).then(setUser) //  user => setUser(user)
 	const login = (form: AuthForm) => auth.login(form).then(setUser)
-	const logout = () => auth.logout().then(() => setUser(null))
+	const logout = () =>
+		auth.logout().then(() => {
+			setUser(null)
+			//	清除 queryClient 数据
+			queryClient.clear()
+		})
 
 	//  effect 模拟的生命周期中执行 user 初始化赋值
 	useDidMount(() => {

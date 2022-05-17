@@ -27,15 +27,3 @@ export const useUrlQueryParam = <T extends string>(keys: T[]) => {
 		},
 	] as const
 }
-
-// const a: (string | number | {
-//     gender: string;
-// })[]
-// const a = ['jack', 12, { gender: 'male' }]
-
-// const aAsConst: readonly ["jack", 12, {
-//     readonly gender: "male";
-// }]
-// const aAsConst = ['jack', 12, { gender: 'male' }] as const
-
-// const a = ['12'] as const
