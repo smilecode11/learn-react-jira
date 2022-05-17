@@ -1,5 +1,5 @@
 import { Button, Drawer, Form, Input, Spin } from 'antd'
-import { useProjectModal } from 'screens/project-list/util'
+import { useProjectModal, useProjectQueryKey } from 'screens/project-list/util'
 import { UserSelect } from 'components/user-select'
 import { useAddProject, useEditProject } from 'utils/project'
 import { useForm } from 'antd/lib/form/Form'
@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 export const ProjectModal = () => {
 	const { projectModalOpen, close, isLoading, editingProject } = useProjectModal()
 	const useMutateProject = editingProject ? useEditProject : useAddProject
-	const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject()
+	const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject(useProjectQueryKey())
 	const [form] = useForm()
 
 	const onFinish = (values: any) => {
@@ -42,6 +42,7 @@ export const ProjectModal = () => {
 							<Form.Item label={'部门'} name={'organization'} rules={[{ required: true, message: '部门必填' }]}>
 								<Input placeholder={'输入部门名'}></Input>
 							</Form.Item>
+							{/* BUGFIX: 负责人选择问题 */}
 							<Form.Item label={'负责人'} name={'personId'}>
 								<UserSelect defaultOptionName={'负责人'} />
 							</Form.Item>

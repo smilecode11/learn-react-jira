@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { QueryKey, useMutation, useQuery, useQueryClient } from 'react-query'
 import { Project } from 'screens/project-list/list'
-import { useProjectsSearchParams } from 'screens/project-list/util'
 import { useHttp } from './http'
+import { useAddConifg, useDeleteConifg, useEditConifg } from './use-optimistic-options'
 
 /** 获取列表*/
 export const useProjects = (param?: Partial<Project>) => {
@@ -11,55 +11,40 @@ export const useProjects = (param?: Partial<Project>) => {
 }
 
 /** 编辑项目*/
-export const useEditProject = () => {
+export const useEditProject = (queryKey: QueryKey) => {
 	const client = useHttp()
-
-	const queryClient = useQueryClient()
-	const [searchParams] = useProjectsSearchParams()
-	const queryKey = ['projects', searchParams]
-
 	return useMutation(
 		(param: Partial<Project>) =>
 			client(`projects/${param.id}`, {
 				method: 'PATCH',
 				data: param,
 			}),
-		{
-			//	执行成功后, projects 更新
-			// onSuccess: () => queryClient.invalidateQueries('projects'),
-			onSuccess: () => queryClient.invalidateQueries(queryKey),
-			//	执行时调用
-			async onMutate(target) {
-				const previousItems = queryClient.getQueryData(queryKey)
-				queryClient.setQueryData(queryKey, (old?: Project[]) => {
-					return old?.map(item => (target.id === item.id ? { ...item, ...target } : item)) || []
-				})
-				return {
-					previousItems,
-				}
-			},
-			//	失败时调用
-			onError(error, newItem, context) {
-				queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems)
-			},
-		}
+		useEditConifg(queryKey)
 	)
 }
 
 /** 新建项目*/
-export const useAddProject = () => {
+export const useAddProject = (queryKey: QueryKey) => {
 	const client = useHttp()
-
-	const queryClient = useQueryClient()
 	return useMutation(
 		(param: Partial<Project>) =>
 			client(`projects`, {
 				method: 'POST',
 				data: param,
 			}),
-		{
-			onSuccess: () => queryClient.invalidateQueries('projects'),
-		}
+		useAddConifg(queryKey)
+	)
+}
+
+/** 删除项目*/
+export const useDeleteProject = (queryKey: QueryKey) => {
+	const client = useHttp()
+	return useMutation(
+		({ id }: { id: number }) =>
+			client(`projects/${id}`, {
+				method: 'DELETE',
+			}),
+		useDeleteConifg(queryKey)
 	)
 }
 
