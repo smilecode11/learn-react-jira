@@ -1,5 +1,5 @@
-import { QueryKey, useMutation, useQuery, useQueryClient } from 'react-query'
-import { Project } from 'screens/project-list/list'
+import { QueryKey, useMutation, useQuery } from 'react-query'
+import { Project } from 'types/project'
 import { useHttp } from './http'
 import { useAddConifg, useDeleteConifg, useEditConifg } from './use-optimistic-options'
 

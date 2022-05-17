@@ -1,4 +1,4 @@
-import { User } from 'screens/project-list/list'
+import { User } from 'types/user'
 import { useDidMount } from 'utils'
 import { useHttp } from './http'
 import { useAsync } from './use-async'

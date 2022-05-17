@@ -1,7 +1,7 @@
 import { Form, Input } from 'antd'
 import { IdSelect } from 'components/id-select'
-import { UserSelect } from 'components/user-select'
-import { Project, User } from './list'
+import { Project } from '../../types/project'
+import { User } from '../../types/user'
 
 interface SearchPanelProps {
 	users: User[]
