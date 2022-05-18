@@ -8,12 +8,11 @@ import { useDebounce, useDocumentTitle } from 'utils'
 
 import SearchPanel from './search-panel'
 import List from './list'
-import styled from '@emotion/styled'
 import { Button, Divider } from 'antd'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
 import { useProjectModal, useProjectsSearchParams } from './util'
-import { ErrorBox, Row } from 'components/lib'
+import { ErrorBox, Row, ScreenContainer } from 'components/lib'
 
 //	基本类型, 可以放到依赖里, 组件状态可以放到依赖里; 非组件状态的对象, 绝不可以放到依赖里
 
@@ -27,7 +26,7 @@ const ProjectList = () => {
 	const { data: users } = useUsers()
 
 	return (
-		<Container>
+		<ScreenContainer>
 			<Row between={true}>
 				<h2>项目列表</h2>
 				<Button onClick={open}>新建项目</Button>
@@ -36,14 +35,10 @@ const ProjectList = () => {
 			<SearchPanel users={users || []} param={param} setParam={setParam}></SearchPanel>
 			<ErrorBox error={error} />
 			<List loading={isLoading} users={users || []} dataSource={list || []}></List>
-		</Container>
+		</ScreenContainer>
 	)
 }
 
 // ProjectList.whyDidYouRender = true
 
 export default ProjectList
-
-const Container = styled.div`
-	padding: 3.2rem;
-`

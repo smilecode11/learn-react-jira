@@ -86,6 +86,7 @@ const HeaderRight = styled(Row)`
 
 const Main = styled.div`
 	grid-area: main;
+	display: flex;
 `
 export const CursorText = styled.div`
 	cursor: pointer;

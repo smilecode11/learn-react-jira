@@ -4,6 +4,7 @@ import { useKanbans } from 'utils/kanban'
 import { KanbanColumn } from './kanban-column'
 import { SearchPanel } from './search-panel'
 import { useKanbanSearchParams, useProjectInUrl } from './util'
+import { ScreenContainer } from 'components/lib'
 
 export const KanbanScreen = () => {
 	useDocumentTitle('看板列表')
@@ -12,7 +13,7 @@ export const KanbanScreen = () => {
 	const { data: kanbans } = useKanbans(useKanbanSearchParams())
 
 	return (
-		<div>
+		<ScreenContainer>
 			<h2>{currentProject?.name}看板</h2>
 			<SearchPanel></SearchPanel>
 			<Container>
@@ -20,10 +21,11 @@ export const KanbanScreen = () => {
 					<KanbanColumn kanban={kanban} key={kanban.id} />
 				))}
 			</Container>
-		</div>
+		</ScreenContainer>
 	)
 }
 
 const Container = styled.div`
 	display: flex;
+	flex: 1;
 `
