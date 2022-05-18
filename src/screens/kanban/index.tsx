@@ -1,7 +1,8 @@
-import React from 'react'
+import styled from '@emotion/styled'
 import { useDocumentTitle } from 'utils'
 import { useKanbans } from 'utils/kanban'
 import { KanbanColumn } from './kanban-column'
+import { SearchPanel } from './search-panel'
 import { useKanbanSearchParams, useProjectInUrl } from './util'
 
 export const KanbanScreen = () => {
@@ -13,9 +14,16 @@ export const KanbanScreen = () => {
 	return (
 		<div>
 			<h2>{currentProject?.name}看板</h2>
-			{kanbans?.map(kanban => (
-				<KanbanColumn kanban={kanban} key={kanban.id} />
-			))}
+			<SearchPanel></SearchPanel>
+			<Container>
+				{kanbans?.map(kanban => (
+					<KanbanColumn kanban={kanban} key={kanban.id} />
+				))}
+			</Container>
 		</div>
 	)
 }
+
+const Container = styled.div`
+	display: flex;
+`
