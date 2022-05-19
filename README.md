@@ -121,6 +121,7 @@
 
 ## 静态网站部署
 
+- github 创建新项目承载打包后静态资源
 - 安装依赖 `yarn add -D gh-pages`
 - 添加 script
   - `"predeploy": "npm run build"`
