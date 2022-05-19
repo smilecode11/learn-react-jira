@@ -119,6 +119,14 @@
 
 使用 React Query 缓存 projects 数据
 
+## 静态网站部署
+
+- 安装依赖 `yarn add -D gh-pages`
+- 添加 script
+  - `"predeploy": "npm run build"`
+  - `"deploy": "gh-pages -d build -r git@github.com:smilecode11/smiling.jira.github.io.git -b main"`
+- 执行 `npm run deploy`
+
 ## 问题
 
 - [craco-less 问题](https://github.com/DocSpring/craco-less/issues/86)
