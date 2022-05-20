@@ -127,6 +127,9 @@
   - `"predeploy": "npm run build"`
   - `"deploy": "gh-pages -d build -r git@github.com:smilecode11/smiling.jira.github.io.git -b main"`
 - 执行 `npm run deploy`
+- 刷新站点 404 问题 [spa github pages](https://github.com/rafgraph/spa-github-pages)
+  - public 新建 404 页面
+  - public/index.html head 中添加重定向代码
 
 ## 问题
 
